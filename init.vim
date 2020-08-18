@@ -1,8 +1,16 @@
+call plug#begin()
+  Plug 'lambdalisue/suda.vim'
+  Plug 'vim-airline/vim-airline' 
+call plug#end()
+
+let suda_smart_edit = 1
+
+let g:airline_powerline_fonts = 1 
+
+set number
+
 filetype plugin on
 filetype indent on
-
-nmap <leader>w :w!<cr>
-command W w !sudo tee % > /dev/null
 
 set so=7
 
@@ -19,10 +27,10 @@ set matchtime=2
 
 set foldcolumn=1
 
-try
-  colorscheme desert
-catch
-endtry
+"try
+"  colorscheme desert
+"catch
+"endtry
 
 set background=dark
 set fileformats=unix,dos,mac
@@ -43,19 +51,25 @@ set smartindent
 
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
-
 func! DeleteTrailingWS()
   exe "normal mz"
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
+
 autocmd BufWrite *.py :call DeleteTrailingWS()
 autocmd BufWrite *.coffee :call DeleteTrailingWS()<Paste>
 
-function! HasPaste()
-  if &paste
-    return 'PASTE MODE  '
-  endif
-  return ''
-endfunction
+if !exists('g:airline_symbols')
+      let g:airline_symbols = {}
+    endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_right_sep = '«'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.notexists = 'Ɇ'
+let g:airline_symbols.whitespace = 'Ξ'
